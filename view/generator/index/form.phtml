@@ -1,0 +1,24 @@
+<form method="post">
+    <div class="field">
+        <label>Select Module :</label>
+        <select name="module">
+            <?php foreach ($modules as $module): ?>
+                <option value="<?php echo $module ?>"><?php echo $module ?></option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+    <br><br>
+    <div class="field">
+        <label>Select Table :</label>
+        <select name="table">
+            <?php foreach ($tables as $table): ?>
+                <option value="<?php echo $table ?>"><?php echo $table ?></option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+    <br><br>
+    <div class="field">
+        <input type="submit" value="Generate Form" /> 
+    </div>
+    
+</form>

@@ -1,0 +1,20 @@
+<form method="post">
+    <div class="field">
+        <label>Select Module :</label>
+        <select name="module">
+            <?php foreach ($modules as $module): ?>
+                <option value="<?php echo $module ?>"><?php echo $module ?></option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+    <br><br>
+    <div class="field">
+        <label>Controller Name :</label>
+        <input type="text" name="controller_name" /> (Please don't include 'Controller' in name)
+    </div>
+    <br><br>
+    <div class="field">
+        <input type="submit" value="Generate Form" /> 
+    </div>
+    
+</form>
