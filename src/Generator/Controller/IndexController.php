@@ -18,6 +18,7 @@ class IndexController extends AbstractActionController
             $module = $this->request->getPost('module');
             $table = $this->request->getPost('table');
             $model->generateForm($module, $table);
+            $this->redirect()->toRoute('generator', array('action' => 'success', 'id' => 'Form'));
         }
         return array('tables' => $tables, 'modules' => $modules);
     }
@@ -31,6 +32,7 @@ class IndexController extends AbstractActionController
             $params = $this->request->getPost();
             if(!empty($params['controller_name'])){
                 $model->createControllerForModule($params['module'], $params['controller_name']);
+                $this->redirect()->toRoute('generator', array('action' => 'success', 'id' => 'Controller'));
             }
         }
         return array('modules' => $modules);
@@ -55,6 +57,7 @@ class IndexController extends AbstractActionController
                     $controllerName = null;
                 }
                 $model->generateModule($moduleName, $createController, $controllerName);
+                $this->redirect()->toRoute('generator', array('action' => 'success', 'id' => 'Module'));
             }
         }
     }
@@ -62,6 +65,11 @@ class IndexController extends AbstractActionController
     public function indexAction()
     {
         
+    }
+    
+    public function successAction(){
+        $type = $this->getEvent()->getRouteMatch()->getParam('id');
+        return array('type' => $type);
     }
 
 }
