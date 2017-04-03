@@ -130,7 +130,7 @@ class Generator {
 		$this->createModuleConfigFile($moduleName);
 		$this->addClassMapFile($moduleName);
 		if ($createController && !empty($controllerName)) {
-		$this->createControllerForModule($moduleName, $controllerName);
+		$this->createControllerForModule($moduleName, $controllerName, $actionName);
 		}
 		$this->addModuleInProject($moduleName);
 	}
