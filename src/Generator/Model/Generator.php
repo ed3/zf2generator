@@ -124,7 +124,7 @@ class Generator {
 		fwrite($handler, "}\n");
 		fwrite($handler, "}");
 	}
-	public function generateModule($moduleName, $createController, $controllerName = null) {
+	public function generateModule($moduleName, $createController = false, $controllerName = null) {
 		$this->createModuleDirectoryStructure($moduleName);
 		$this->createModuleFile($moduleName);
 		$this->createModuleConfigFile($moduleName);
@@ -216,21 +216,22 @@ class Generator {
 	public function createControllerForModule($moduleName, $controllerName, $actionName) {
 		$this->appPath();
 		chdir("module/$moduleName/src/$moduleName/Controller");
-		$controllerFullName = $controllerName . 'Controller';
-		$handle = fopen("$controllerFullName.php", "w+");
+		$controllerFullName = ucfirst($controllerName) . 'Controller';
+		$handle = fopen(ucfirst($controllerFullName).".php", "w+");
 		$content = "<?php\n";
 		$content .= "namespace $moduleName\Controller;\n\n";
 		$content .= "use Zend\Mvc\Controller\AbstractActionController;\n";
 		$content .= "use Zend\View\Model\ViewModel;\n\n";
 		$content .= "class $controllerFullName extends AbstractActionController {\n";
-		$content .= "\tpublic function indexAction() {\n";
-		$content .= "\t}\n";
 		if($actionName !="") {
 			$acts = explode(",",$actionName);
 			foreach($acts as $act) {
 			$content .= "\tpublic function ".strtolower($act)."Action() {\n";
 			$content .= "\t}\n";
 			}
+		} else {
+			$content .= "\tpublic function indexAction() {\n";
+			$content .= "\t}\n";
 		}
 		$content .= "}";
 		fwrite($handle, $content);
@@ -239,12 +240,13 @@ class Generator {
 	}
 	protected function addRouterForController($controllerName, $moduleName) {
 		$moduleConfig = $this->getModuleConfig($moduleName);
+		$controllerName = ucfirst($controllerName);
 		$controllerFullName = $controllerName . 'Controller';
 		$moduleConfig['controllers']['invokables']["$moduleName\Controller\\$controllerName"] = "$moduleName\Controller\\$controllerFullName";
 		$controllerRouter = array(
 		'type' => 'segment',
 		'options' => array(
-		'route' => '/'.strtolower($moduleName) . '/' . strtolower($controllerName) . '[/:action][/:id]',
+		'route' => '/'.strtolower($moduleName) . '[/:controller[/:action[/:id]]]',
 		'constraints' => array(
 		'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
 		'id' => '[0-9]+',
