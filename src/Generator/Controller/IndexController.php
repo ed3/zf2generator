@@ -1,10 +1,12 @@
 <?php
 namespace Generator\Controller;
 use Zend\Mvc\Controller\AbstractActionController,
+Zend\Db\Adapter\Adapter,
 Zend\View\Model\ViewModel;
 class IndexController extends AbstractActionController {
 	private function mm() {
-		$dbAdapter = $this->getServiceLocator()->get('Zend\Db\Adapter\Adapter');
+		//$dbAdapter = $this->getServiceLocator()->get('Zend\Db\Adapter\Adapter');
+		$dbAdapter = new Adapter(['driver' => 'Mysqli','database' => 'test','username' => 'root','password' => '']);
 		return new \Generator\Model\Generator($dbAdapter);
 	}
 	public function moduleAction() {
